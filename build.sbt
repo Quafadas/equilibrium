@@ -9,23 +9,20 @@ ThisBuild / developers := List(
 ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / tlSonatypeUseLegacyHost := true
 
+val Scala213 = "2.13.13"
 
-val Scala213 = "2.13.7"
-
-ThisBuild / crossScalaVersions := Seq(Scala213, "3.1.3")
+ThisBuild / crossScalaVersions := Seq(Scala213, "3.3.3")
 ThisBuild / scalaVersion := Scala213
 
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
-val catsV = "2.7.0"
-val catsEffectV = "3.3.12"
-val fs2V = "3.2.9"
-val http4sV = "0.23.11"
-val circeV = "0.14.2"
-val doobieV = "1.0.0-RC2"
+val catsV = "2.10.0"
+val catsEffectV = "3.5.0"
+val fs2V = "3.10.2"
+val http4sV = "0.23.26"
+val circeV = "0.14.5"
+val doobieV = "1.0.0-RC5"
 val munitCatsEffectV = "1.0.7"
-
-
 
 // Projects
 lazy val `equilibrium` = tlCrossRootProject
@@ -35,25 +32,19 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "equilibrium-core",
-
     libraryDependencies ++= Seq(
-      "org.typelevel"               %% "cats-core"                  % catsV,
-      "org.typelevel"               %% "cats-effect"                % catsEffectV,
-
-      "co.fs2"                      %% "fs2-core"                   % fs2V,
-      "co.fs2"                      %% "fs2-io"                     % fs2V,
-
-      "org.http4s"                  %% "http4s-ember-server"        % http4sV,
-      "org.http4s"                  %% "http4s-ember-client"        % http4sV,
-      "org.http4s"                  %% "http4s-circe"               % http4sV,
-
-      "io.circe"                    %% "circe-core"                 % circeV,
-      "io.circe"                    %% "circe-generic"              % circeV,
-      "io.circe"                    %% "circe-parser"               % circeV,
-      "io.circe"                    %% "circe-yaml"                 % "0.14.1",
-
-      "org.typelevel"               %% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
-
+      "org.typelevel" %% "cats-core" % catsV,
+      "org.typelevel" %% "cats-effect" % catsEffectV,
+      "co.fs2" %% "fs2-core" % fs2V,
+      "co.fs2" %% "fs2-io" % fs2V,
+      "org.http4s" %% "http4s-ember-server" % http4sV,
+      "org.http4s" %% "http4s-ember-client" % http4sV,
+      "org.http4s" %% "http4s-circe" % http4sV,
+      "io.circe" %% "circe-core" % circeV,
+      "io.circe" %% "circe-generic" % circeV,
+      "io.circe" %% "circe-parser" % circeV,
+      "io.circe" %% "circe-yaml" % "0.14.1",
+      "org.typelevel" %% "munit-cats-effect-3" % munitCatsEffectV % Test
     )
   )
 
@@ -62,8 +53,10 @@ lazy val app = project
   .enablePlugins(NoPublishPlugin)
   .settings(
     name := "equilibrium"
-  ).dependsOn(core)
+  )
+  .dependsOn(core)
 
-lazy val site = project.in(file("site"))
+lazy val site = project
+  .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
   .dependsOn(core)
